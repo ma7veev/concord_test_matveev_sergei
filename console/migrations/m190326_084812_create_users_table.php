@@ -21,7 +21,7 @@
                         'id'         => $this -> primaryKey(),
                         'login'      => $this -> string() -> notNull(),
                         'password'   => $this -> string() -> notNull(),
-                        'email'      => $this -> string() -> notNull(),
+                        'email'      => $this -> string() ->unique()-> notNull(),
                         'group_id'   => $this -> integer() -> notNull(),
                         'photo'      => $this -> string() -> notNull(),
                         'created_at' => $this -> timestamp() -> notNull(),

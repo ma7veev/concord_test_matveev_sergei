@@ -18,7 +18,7 @@
             }
             $this -> createTable('{{%groups}}', [
                   'id'    => $this -> primaryKey(),
-                  'login' => $this -> string() -> notNull(),
+                  'name' => $this -> string()->unique() -> notNull(),
             ],$tableOptions);
         }
         
