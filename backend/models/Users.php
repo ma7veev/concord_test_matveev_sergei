@@ -21,7 +21,7 @@
      */
     class Users extends \yii\db\ActiveRecord
     {
-        public $uploaded_file = '';
+        public $upload_file;
         
         /**
          * {@inheritdoc}
@@ -29,6 +29,18 @@
         public static function tableName()
         {
             return 'users';
+        }
+        
+        public function beforeSave($insert)
+        {
+            $this -> password = md5($this -> password);
+            if ( !is_null($this -> upload_file)) {
+                
+                $new_file_name = substr(md5(mt_rand()), 0, 7);
+                $this -> photo = $new_file_name;
+            }
+            
+            return parent ::beforeSave($insert);
         }
         
         /**
@@ -54,7 +66,7 @@
                   [['login', 'password', 'email'], 'string', 'max' => 255],
                   [['login', 'email'], 'unique'],
                   [
-                        ['photo'],
+                        ['upload_file'],
                         'file',
                         'skipOnEmpty' => false,
                         'extensions'  => 'png, jpg',
@@ -96,13 +108,17 @@
         
         public function upload()
         {
-            if ($this -> validate()) {
-                $new_file_name = substr(md5(mt_rand()), 0, 7);
-                $this -> photo -> saveAs('uploads/'.$new_file_name.'.'.$this -> photo -> extension);
-             //   $this->photo = $new_file_name;
+            if ( !is_null($this -> upload_file)) {
+                $this -> upload_file -> saveAs('uploads/'.$this -> photo.'.'.$this -> upload_file -> extension);
+                
                 return true;
-            } else {
-                return false;
             }
+            
+            return false;
+        }
+        
+        public function setUpload()
+        {
+        
         }
     }

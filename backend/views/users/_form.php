@@ -18,7 +18,7 @@
     
     <?= $form -> field($model, 'group_id') -> dropDownList($groups_list); ?>
     
-    <?= $form -> field($model, 'photo') -> fileInput(['id'=>'photo']) ?>
+    <?= $form -> field($model, 'upload_file') -> fileInput() ?>
     
    <div class="form-group">
        <?= Html ::submitButton('Save', ['class' => 'btn btn-success']) ?>

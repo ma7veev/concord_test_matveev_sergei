@@ -70,10 +70,9 @@
         {
             $model = new Users;
             if ($model -> load(Yii ::$app -> request -> post())) {
-                $model -> password = md5($model -> password);
-                $model -> photo = UploadedFile ::getInstance($model, 'photo');
-                // var_dump($model -> save(),$model -> upload());
-                if ( $model -> save() && $model -> upload()) {
+        
+                $model -> upload_file = UploadedFile ::getInstance($model, 'upload_file');
+                if ($model -> save() && $model -> upload()) {
                     return $this -> redirect(['view', 'id' => $model -> id]);
                 }
             }
@@ -97,13 +96,19 @@
         public function actionUpdate($id)
         {
             $model = $this -> findModel($id);
-            if ($model -> load(Yii ::$app -> request -> post()) && $model -> save()) {
-                return $this -> redirect(['view', 'id' => $model -> id]);
+            if ($model -> load(Yii ::$app -> request -> post())) {
+    
+                $model -> upload_file = UploadedFile ::getInstance($model, 'upload_file');
+                if ($model -> save() && $model -> upload()) {
+                    return $this -> redirect(['view', 'id' => $model -> id]);
+                }
             }
+            $groups_list = Groups ::find() -> select('name') -> indexBy('id') -> column();
             
             return $this -> render('update',
                   [
-                        'model' => $model,
+                        'model'       => $model,
+                        'groups_list' => $groups_list,
                   ]);
         }
         
