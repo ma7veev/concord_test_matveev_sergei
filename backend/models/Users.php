@@ -22,29 +22,27 @@
     class Users extends \common\models\Users
     {
         public $upload_file;
+        const PHOTO_PATH = 'uploads/users_photo/';
         
         public function beforeSave($insert)
         {
             $this -> password = md5($this -> password);
-            if ( !is_null($this -> upload_file)) {
+            if ( !empty($this -> upload_file) && $this -> upload_file -> size !== 0) {
                 
-                $new_file_name = substr(md5(mt_rand()), 0, 7);
-                $this -> photo = $new_file_name;
+                $this -> photo = $this -> id.'.'.$this -> upload_file -> extension;
             }
             
             return parent ::beforeSave($insert);
         }
         
-      
         public function upload()
         {
             if ( !is_null($this -> upload_file)) {
-                $this -> upload_file -> saveAs('uploads/users_photo/'.$this -> id.'.'.$this -> upload_file -> extension);
+                $this -> upload_file -> saveAs(self::PHOTO_PATH.$this -> photo);
                 
                 return true;
             }
             
             return false;
         }
-        
     }

@@ -11,6 +11,7 @@
     use yii\filters\VerbFilter;
     use yii\web\UploadedFile;
     use yii\filters\AccessControl;
+    use yii\base\ErrorException;
     
     /**
      * UsersController implements the CRUD actions for Users model.
@@ -32,7 +33,7 @@
                               ],
                         ],
                   ],
-                  'verbs' => [
+                  'verbs'  => [
                         'class'   => VerbFilter ::className(),
                         'actions' => [
                               'delete' => ['POST'],
@@ -87,6 +88,10 @@
                 }
             }
             $groups_list = Groups ::find() -> select('name') -> indexBy('id') -> column();
+            if (is_null($groups_list) || empty($groups_list)) {
+                return $this -> render('/site/exeption',
+                      ['message' => 'Список групп пользователей пуст. Сначала создайте группу. <a href="/groups/create">Создать.</a>']);
+            }
             
             //  var_dump($groups_list);
             return $this -> render('create',
@@ -106,10 +111,22 @@
         public function actionUpdate($id)
         {
             $model = $this -> findModel($id);
+            $current_photo = $model -> upload_file;
             if ($model -> load(Yii ::$app -> request -> post())) {
                 
-                $model -> upload_file = UploadedFile ::getInstance($model, 'upload_file');
-                if ($model -> save() && $model -> upload()) {
+                $new_photo = UploadedFile ::getInstance($model, 'upload_file');
+                if ( !empty($new_photo) && $new_photo -> size !== 0) {
+                  
+                    $model -> upload_file = $new_photo;
+                } else {
+                 
+                    $model -> upload_file = $current_photo;
+                }
+                if ($model -> save()) {
+                    if ( !empty($new_photo) && $new_photo -> size !== 0) {
+                        $model -> upload();
+                    }
+                    
                     return $this -> redirect(['view', 'id' => $model -> id]);
                 }
             }

@@ -32,6 +32,7 @@ class VerifyEmailForm extends Model
             throw new InvalidArgumentException('Verify email token cannot be blank.');
         }
         $this->_user = User::findByVerificationToken($token);
+      
         if (!$this->_user) {
             throw new InvalidArgumentException('Wrong verify email token.');
         }

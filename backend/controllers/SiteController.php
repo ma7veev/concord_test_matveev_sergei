@@ -24,25 +24,14 @@
             return [
                   'access' => [
                         'class' => AccessControl ::className(),
-                        'only'  => ['logout', 'signup', 'verify-email'],
                         'rules' => [
                               [
-                                    'actions' => ['login', 'error'],
-                                    'allow'   => true,
-                              ],
-                              [
-                                    'actions' => ['signup'],
-                                    'allow'   => true,
-                                    'roles'   => ['?'],
-                              ],
-                              [
-                                    'actions' => ['login', 'error'],
-                                    'allow'   => true,
-                              ],
-                              [
-                                    'actions' => ['logout', 'index'],
                                     'allow'   => true,
                                     'roles'   => ['@'],
+                              ],
+                              [
+                                    'actions' => ['login', 'error'],
+                                    'allow'   => true,
                               ],
                         ],
                   ],

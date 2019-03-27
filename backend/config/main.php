@@ -20,6 +20,7 @@ return [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+           
         ],
         'formatter' => [
               'class'           => 'yii\i18n\Formatter',

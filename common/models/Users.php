@@ -53,9 +53,11 @@
                   [
                         ['upload_file'],
                         'file',
-                        'skipOnEmpty' => false,
-                        'extensions'  => 'png, jpg',
+                        'skipOnEmpty' => !$this->isNewRecord,
+                        'extensions'  => 'png, jpg, jpeg',
+                        
                   ],
+                  [['upload_file'],'required','on'=>['create']],
                   [
                         ['group_id'],
                         'exist',

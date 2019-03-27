@@ -19,9 +19,9 @@
             $this -> createTable('{{%users}}',
                   [
                         'id'         => $this -> primaryKey(),
-                        'login'      => $this -> string() -> notNull(),
-                        'password'   => $this -> string() -> notNull(),
-                        'email'      => $this -> string() ->unique()-> notNull(),
+                        'login'      => $this -> string(60) -> notNull(),
+                        'password'   => $this -> string(60) -> notNull(),
+                        'email'      => $this -> string(60) ->unique()-> notNull(),
                         'group_id'   => $this -> integer() -> notNull(),
                         'photo'      => $this -> string() -> notNull(),
                         'created_at' => $this -> timestamp() -> notNull(),
