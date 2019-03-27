@@ -46,6 +46,7 @@ class GroupsSearch extends Groups
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [ 'pageSize' => 5 ],
         ]);
 
         $this->load($params);

@@ -10,6 +10,7 @@
     use yii\web\NotFoundHttpException;
     use yii\filters\VerbFilter;
     use yii\web\UploadedFile;
+    use yii\filters\AccessControl;
     
     /**
      * UsersController implements the CRUD actions for Users model.
@@ -22,6 +23,15 @@
         public function behaviors()
         {
             return [
+                  'access' => [
+                        'class' => AccessControl ::className(),
+                        'rules' => [
+                              [
+                                    'allow' => true,
+                                    'roles' => ['@'],
+                              ],
+                        ],
+                  ],
                   'verbs' => [
                         'class'   => VerbFilter ::className(),
                         'actions' => [
@@ -70,7 +80,7 @@
         {
             $model = new Users;
             if ($model -> load(Yii ::$app -> request -> post())) {
-        
+                
                 $model -> upload_file = UploadedFile ::getInstance($model, 'upload_file');
                 if ($model -> save() && $model -> upload()) {
                     return $this -> redirect(['view', 'id' => $model -> id]);
@@ -97,7 +107,7 @@
         {
             $model = $this -> findModel($id);
             if ($model -> load(Yii ::$app -> request -> post())) {
-    
+                
                 $model -> upload_file = UploadedFile ::getInstance($model, 'upload_file');
                 if ($model -> save() && $model -> upload()) {
                     return $this -> redirect(['view', 'id' => $model -> id]);

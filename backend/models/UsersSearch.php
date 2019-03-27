@@ -43,9 +43,10 @@ class UsersSearch extends Users
         $query = Users::find();
 
         // add conditions that should always apply here
-
+      //  $query = modalName::find()->andWhere([ 'status' => ['open', 'pending'] ]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [ 'pageSize' => 5 ],
         ]);
 
         $this->load($params);
